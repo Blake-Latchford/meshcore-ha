@@ -139,6 +139,27 @@ LPP_TYPE_MAPPINGS: dict[int | str, dict] = {
         "create_multi": True,  # Create separate sensors for R, G, B
         "multi_fields": ["r", "g", "b"],
     },
+    # 250-252: placeholder LPP type IDs for wind/rain telemetry, not a
+    # coordinated allocation yet (see meshcore-dev/MeshCore#3368) — disposable,
+    # expect these to be renumbered before field deployment.
+    250: {
+        "name": "Wind Speed",
+        "icon": "mdi:weather-windy",
+        "state_class": SensorStateClass.MEASUREMENT,
+        "create_multi": False,
+    },
+    251: {
+        "name": "Wind Gust",
+        "icon": "mdi:weather-windy-variant",
+        "state_class": SensorStateClass.MEASUREMENT,
+        "create_multi": False,
+    },
+    252: {
+        "name": "Rain Tip Count",
+        "icon": "mdi:weather-pouring",
+        "state_class": SensorStateClass.MEASUREMENT,
+        "create_multi": False,
+    },
 }
 
 # The meshcore SDK's lpp_json_encoder converts integer LPP type codes to string
@@ -160,6 +181,9 @@ _LPP_STRING_TO_INT: dict[str, int] = {
     "current": 117,
     "power": 128,
     "colour": 135,
+    "wind speed": 250,
+    "wind gust": 251,
+    "rain tip count": 252,
 }
 
 for _str_name, _int_key in _LPP_STRING_TO_INT.items():
