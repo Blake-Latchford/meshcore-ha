@@ -132,6 +132,38 @@ LPP_TYPE_MAPPINGS: dict[int | str, dict] = {
         "suggested_display_precision": 0,
         "create_multi": False,
     },
+    # Wind/rain types use the IDs and scales decoded by meshcore-sar (not an official MeshCore
+    # allocation yet, see meshcore-dev/MeshCore#3368). Wire units: 0.01 m/s, 0.01 m/s, 0.1 mm; the
+    # decode chain has already applied the scale.
+    129: {
+        "name": "Wind Speed",
+        "icon": "mdi:weather-windy",
+        "device_class": SensorDeviceClass.WIND_SPEED,
+        "native_unit_of_measurement": "m/s",
+        "state_class": SensorStateClass.MEASUREMENT,
+        "suggested_display_precision": 2,
+        "create_multi": False,
+    },
+    137: {
+        "name": "Wind Gust",
+        "icon": "mdi:weather-windy-variant",
+        "device_class": SensorDeviceClass.WIND_SPEED,
+        "native_unit_of_measurement": "m/s",
+        "state_class": SensorStateClass.MEASUREMENT,
+        "suggested_display_precision": 2,
+        "create_multi": False,
+    },
+    # Cumulative counter since node boot, stopping at 6553.5 mm; TOTAL_INCREASING treats a node
+    # reboot (the counter restarting from zero) as a reset rather than negative rainfall.
+    139: {
+        "name": "Rain",
+        "icon": "mdi:weather-pouring",
+        "device_class": SensorDeviceClass.PRECIPITATION,
+        "native_unit_of_measurement": "mm",
+        "state_class": SensorStateClass.TOTAL_INCREASING,
+        "suggested_display_precision": 1,
+        "create_multi": False,
+    },
     135: {
         "name": "Color",
         "icon": "mdi:palette",
@@ -144,27 +176,6 @@ LPP_TYPE_MAPPINGS: dict[int | str, dict] = {
         "icon": "mdi:compass-outline",
         "state_class": SensorStateClass.MEASUREMENT,
         "native_unit_of_measurement": "°",
-        "create_multi": False,
-    },
-    # 250-252: placeholder LPP type IDs for wind/rain telemetry, not a
-    # coordinated allocation yet (see meshcore-dev/MeshCore#3368) — disposable,
-    # expect these to be renumbered before field deployment.
-    250: {
-        "name": "Wind Speed",
-        "icon": "mdi:weather-windy",
-        "state_class": SensorStateClass.MEASUREMENT,
-        "create_multi": False,
-    },
-    251: {
-        "name": "Wind Gust",
-        "icon": "mdi:weather-windy-variant",
-        "state_class": SensorStateClass.MEASUREMENT,
-        "create_multi": False,
-    },
-    252: {
-        "name": "Rain Tip Count",
-        "icon": "mdi:weather-pouring",
-        "state_class": SensorStateClass.MEASUREMENT,
         "create_multi": False,
     },
 }
@@ -189,9 +200,9 @@ _LPP_STRING_TO_INT: dict[str, int] = {
     "power": 128,
     "colour": 135,
     "direction": 132,
-    "wind speed": 250,
-    "wind gust": 251,
-    "rain tip count": 252,
+    "wind speed": 129,
+    "wind gust": 137,
+    "rain": 139,
 }
 
 for _str_name, _int_key in _LPP_STRING_TO_INT.items():
