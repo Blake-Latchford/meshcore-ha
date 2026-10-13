@@ -153,14 +153,14 @@ LPP_TYPE_MAPPINGS: dict[int | str, dict] = {
         "suggested_display_precision": 2,
         "create_multi": False,
     },
-    # Cumulative counter since node boot, stopping at 6553.5 mm; TOTAL_INCREASING treats a node
-    # reboot (the counter restarting from zero) as a reset rather than negative rainfall.
+    # Rainfall over the last 60 minutes, so mm over the last hour reads directly as mm/h. It falls
+    # as rain stops, so it's a measurement, not a total.
     139: {
         "name": "Rain",
         "icon": "mdi:weather-pouring",
-        "device_class": SensorDeviceClass.PRECIPITATION,
-        "native_unit_of_measurement": "mm",
-        "state_class": SensorStateClass.TOTAL_INCREASING,
+        "device_class": SensorDeviceClass.PRECIPITATION_INTENSITY,
+        "native_unit_of_measurement": "mm/h",
+        "state_class": SensorStateClass.MEASUREMENT,
         "suggested_display_precision": 1,
         "create_multi": False,
     },
