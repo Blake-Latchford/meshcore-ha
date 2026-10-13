@@ -40,6 +40,17 @@ def extract_pubkey_hex(contact: dict[str, Any]) -> str:
     return pk or ""
 
 
+def telemetry_pubkey_prefix(payload: dict[str, Any]) -> str:
+    """Return the sending node's pubkey prefix from a TELEMETRY_RESPONSE payload.
+
+    Replies to a polled ``req_telemetry`` carry ``pubkey_prefix``, but pushed
+    replies to ``send_telemetry_req`` (e.g. from the execute_command service)
+    carry it as ``pubkey_pre``. Reading only ``pubkey_prefix`` mistakes a
+    pushed reply from a remote node for self telemetry.
+    """
+    return payload.get("pubkey_prefix") or payload.get("pubkey_pre") or ""
+
+
 def get_node_type_str(node_type: str | None) -> str:
     """Convert NodeType to a human-readable string."""
     if node_type == NodeType.CLIENT:

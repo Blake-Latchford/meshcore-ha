@@ -23,6 +23,7 @@ from .utils import (
     get_device_model, 
     build_device_id,
     extract_pubkey_hex,
+    telemetry_pubkey_prefix,
 )
 from . import MeshCoreDataUpdateCoordinator
 
@@ -57,7 +58,7 @@ class DeviceTrackerManager:
             _LOGGER.debug("No LPP data in telemetry event")
             return
 
-        pubkey_prefix = event.payload.get("pubkey_prefix", "")
+        pubkey_prefix = telemetry_pubkey_prefix(event.payload)
         lpp_data = event.payload.get("lpp", [])
         
         # If no pubkey_prefix, this might be self telemetry
