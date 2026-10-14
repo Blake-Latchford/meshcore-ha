@@ -179,6 +179,16 @@ LPP_TYPE_MAPPINGS: dict[int | str, dict] = {
         "native_unit_of_measurement": "°",
         "create_multi": False,
     },
+    # Yamartino standard deviation of the headings over the wind window, 0.1° on the wire. Not a
+    # meshcore-sar type; 140 is unused there.
+    140: {
+        "name": "Wind Direction Stddev",
+        "icon": "mdi:compass-rose",
+        "state_class": SensorStateClass.MEASUREMENT,
+        "native_unit_of_measurement": "°",
+        "suggested_display_precision": 1,
+        "create_multi": False,
+    },
 }
 
 # The meshcore SDK's lpp_json_encoder converts integer LPP type codes to string
@@ -204,6 +214,7 @@ _LPP_STRING_TO_INT: dict[str, int] = {
     "wind speed": 129,
     "wind gust": 137,
     "rain": 139,
+    "wind direction stddev": 140,
 }
 
 for _str_name, _int_key in _LPP_STRING_TO_INT.items():
